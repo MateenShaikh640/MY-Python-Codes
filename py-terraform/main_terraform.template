@@ -1,10 +1,12 @@
 provider "${providername}" {
     region = "${region}"
-    access_key = "${access_key}"
+
 }
+
 resource "${resourcetype}" "${resourcename}" {
     ami = "${ami_id}"
     instance_type = "${instancename}"
+    key_name = "${keyname}"
 
     tags = {
       Name =  "${tagsname}"

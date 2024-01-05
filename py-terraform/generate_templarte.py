@@ -1,17 +1,3 @@
-# from string import Template
-
-# with open ("main_terraform.template", "r") as aws_template:
-#  file_data = aws_template.read()
-
-#  print("Template Content Before Substitution:")
-#  print(file_data)
-
-#  template_data = Template(file_data)
-#  sub_data = template_data.substitute({"providername": "aws", "region": "ap-south-1", "access_key": "goku", "resourcetype":"aws_instance","resourcename":"web",
-#                                       "aminame":"ami-03f4878755434977f", "instancename":"t2.micro","tagsname":"web-app"})
-#  with open ("main.tf", "w") as main_file:
-#   main_file.write(sub_data)
-
 from string import Template
 
 # Define variables
@@ -20,7 +6,7 @@ variables = {
     "resourcetype": "aws_instance",
     "resourcename": "web",
     "region": "ap-south-1",
-    "access_key": "goku",
+    "keyname": "goku",
     "ami_id": "ami-03f4878755434977f",
     "instancename": "t2.micro",
     "tagsname": "web-app"
