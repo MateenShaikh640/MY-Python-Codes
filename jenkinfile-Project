@@ -1,0 +1,74 @@
+//jenkins Pipeline:
+
+pipeline {
+    agent any
+    tools {
+  terraform 'Terraform-Docker'
+}
+
+    stages {
+        stage('Hello') {
+            steps {
+                echo 'Hello World'
+            }
+        }
+        
+        stage('Git') {
+            steps {
+                git branch: 'main', url: 'https://github.com/MateenShaikh640/MY-Python-Codes.git'
+            }
+        }
+        stage('Python-file-gennerate') {
+            steps {
+                 script {
+                    dir('py-terraform') {
+                        echo 'Inside py-terraform directory'
+                        sh 'python3 generate_templarte.py'
+                        // sh 'ls'
+                    }
+                }
+            }
+        }
+stage('Ec2-instance-Creating..') {
+    steps {
+        script {
+            dir('py-terraform') {
+                withAWS(credentials: 'jenkins-test-user', region: 'ap-south-1')
+                {
+                    sh 'terraform init'
+                    sh 'terraform plan'
+                    // sh 'terraform apply --auto-approve'
+                    sh 'terraform destroy --auto-approve'
+
+
+                }
+            }
+        }
+    }
+}
+    
+    }
+}
+
+
+
+//Freestyle:
+aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID}
+aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY}
+
+# Print AWS credentials for verification (optional)
+echo $AWS_ACCESS_KEY_ID
+echo $AWS_SECRET_ACCESS_KEY
+
+cd ./py-terraform/
+ls
+python3 generate_templarte.py
+sleep 10
+terraform --version
+terraform init
+terraform plan
+sleep 10
+terraform apply --auto-approve  
+sleep 300
+terraform destroy --auto-approve 
+
